@@ -1,2 +1,3 @@
 # LAB4DIG2
-este si
+Pruebas de la practica
+uwu c: panic
