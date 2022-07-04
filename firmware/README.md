@@ -1,73 +1,76 @@
-# BUHO, Radar Puntos Ciego
+# Firmware
+## Funciones de prueba
+Una vez construído nuestro SoC, tenemos a nuestra disposición todos los módulos construídos, para usarlos de la manera que definamos. Para aprovecharlos, debemos escribir el software que los va a controlar y de esta manera los pondrá a nuestra orden.
 
-# Autores 💡
+Para construir nuestro firmware, tenemos que tener claro cómo funcionan nuestros módulos y qué podemos leer y escribir de ellos. Sabiendo esto, Litex y Migen se han encargado de abstraer estos procesos mediante funciones generadas que se encuentran en el archivo [CSR.h](https://github.com/DAROGRA/Proyecto/blob/main/build/nexys4ddr/software/include/generated/csr.h) que podremos utilizar al escribir el programa que ejecutará nuestro SoC.
 
-* Daniel Andres Rojas Granados ⚡
-* Diana Sofia Lopez ⚡
-* Juan David Lopez ⚡
+En nuestro caso, se escribieron funciones de prueba para cada módulo implementado con el objetivo de comprobar su respectiva operabilidad y, por supuesto, el programa principal con el cual el carro se encontrará en capacidad de recorrer un laberinto, reconocer su entorno y transmitir la información encontrada a un usuario por medio de la terminal y el modulo Bluethooth.
+
+A continuación presentaremos las funciones integradas junto con sus respectivas explicaciones.
+
+### test_us()
+```C
+static void US_test(void)
+{
+	printf("Test del los leds... se interrumpe con el botton 1\n");
+	while(!(buttons_in_read()&1)) {
+			int done=us_driver_medida_read();
+			printf("distancia: %d \n",done);
+		delay_ms(200);
+	}
+
+}
+
+```
+Este difiere en que el módulo de ultrasonido no tiene lecturas repetidas sino que se le debe dar la orden realizar todo el proceso relacionado con hacer la respectiva medición y de la misma manera establecer un reset para que este esté disponible para hacerla nuevamente. se imprime el valor de la distancia en consola
 
 
-Este es el repositorio del Robot Cartógrafo para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El robot cartógrafo se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys A7, y periféricos los cuales sirven para cumplir el objetivo del proyecto, su funcionamiento principal radica en la generación de un vector donde se encuentran las direcciones del robot en cada instante de tiempo según el análisis del entorno en el que se encuentra por medio del sensor de ultrasonido, sensores infrarrojos y envio de datos por medio de bluetooth, y por otra parte se tiene un registro de la temperatura y humedad de las condiciones ambientales a las cuales esta sometido, siendo este nuestro periférico adicional.
+### pwm_test()
+```C
+static void test_pwm(void){
+int posicionn=0;
+while(!(buttons_in_read()&1)) {
+			if(posicionn==7){
+			    dir=-1;
+			}
+			if(posicionn==1){
+			    dir=1;
+			}
+}
+```
 
-![Screenshot](/Graficos/SoC.png)
+Se prueba usar el servo con distancaias de angulo de 0 a 180° teniendo 7 cambios de estado
 
-Como periféricos se implementaron un Sensor de ultrasonido HC-sr04 el cual es usado para la deteccion de vehiculos en un rango de 2 metros por medio de ondas de sonido, tambien se usa un Módulo Bluetooth HC06 el cual permite la comunicacion entre los datos recibidos del sensor y el servo motor, para ser enviados hasta un dispositivo que reciba los datos y los grafique en una interfaz grafica, para lograr un movimiento del sensor se usa adicionalmente un Servomotor MG90, el cual esta caracterizado por 6 estados para realiar un barrido de 180° recubriendo el punto ciego trasero de los camiones.
+### uart_test()
+```C
+static void uart3_test(void){
+	uart1_write(preubalect);
+	delay(30ms)
+}
+```
+Prueba de la escritura del modulo de Bluetooth.
 
-Se presenta un diagrama con las conexiones entre los diferentes periféricos y el SoC:
-![Screenshot](/Imagenes_y_Videos/SoC.png)
 
-El mapa de memoria se presenta a continuación.
-| csr_base| Direccion |
-| ------------- | ------------- |
-|leds|0x82000000|
-|switchs|0x82000800|
-|buttons|0x82001000|
-|display|0x82001800|
-|ledRGB_1|0x82002000|
-|ledRGB_2|0x82002800|
-|vga_cntrl|0x82003000|
-|uart1|0x82004000|
-|uart2|0x82005000|
-|uart3|0x82006000|
-|infra_cntrl|0x82006800|
-|pwm_cntrl|0x82007000|
-|ultrasonido|0x82007800|
-|ctrl|0x82008000|
-|timer0|0x82008800|
-|uart|0x82009000|
+### uart_read()
+```C
+static void uart3_test(void){
+	uart1_read(preubalect);
+	delay(30ms)
+}
+```
 
-## [Firmware](/firmware/) :
-Se presenta la información del código usado para el desarrollo del funcionamiento del robot cartógrafo y principalmente el archivo [main.c](/firmware/main.c). 
 
-## [Periféricos](/module) :
-En cada uno de los links se presenta el módulo en verilog y una explicación detallada del código utilizado para su funcionamiento.
 
-- [Ultrasonido](/module/verilog/Ultrasonido/)
-- [Infrarrojos](/module/verilog/Infrarrojo/)
-- [Servomotor (pwm)](/module/verilog/PWM)
-- [Motores](/Arduino/Motores)
-- [Bluetooth](/Arduino/Bluetooth)
-- [Sensor de Temperatura](/Arduino/SensorTemperatura)
-
-## Alimentación:
-Se alimentan los periféricos a través de una extensión y un cargador de 5V/2A. El puente H se alimenta con 8 pilas AA para alcanzar los 12 voltios requeridos y la corriente que necesitan los motores para mover el carro. Debido a algunos inconvenientes con la alimentación de la FPGA y el Arduino, estos se conectan a los puertos USB del computador y se debe mover el computador según la ruta que siga el robot.
-
-## Diseño:
-Se realizó un diseño para impresión en 3D de la base del carro cartógrafo y se presentan todos los documentos de diseño en el siguiente enlace [Diseño](/Diseño).
-
-## Pruebas de Funcionamiento :
-Se encuentra a continuación un enlace con los vídeos de funcionamiento de cada uno de los periféricos y el resultado final. [aqui](https://drive.google.com/drive/folders/112-6SYxrrSyqni91OqtPZYYySc63U7gP?usp=sharing)
-
-- Detección infrarrojo
-- Ultrasonido/Giro Izquierda
-- Ultrasonido/Giro Derecha
-- Servomotor
-- Bluetoot
-- Sensor de Temperatura y Humedad
-- Resultado Final
-
-## Consideraciones Finales :
-
-- Teniendo en cuenta dificultades presentadas dentro de la realización del presente proyecto, se recomienda tener especial cuidado con la conexión de todas las tierras del circuito a un punto fijo, ya que el correcto funcionamiento de algunos módulos (por no decir de todos) depende de esto. Si se llega a tener un movimiento extraño en el [servomotor](/module/verilog/PWM) o si se está recibiendo extraños caracteres por el celular debido al módulo [Bluetooth](/Arduino/Bluetooth), son algunos de los problemas presentados, si no se tiene en cuenta lo anterior.
-- Se recomienda realizar un correcto uso del [sensor infrarrojo](/module/verilog/Infrarrojo/) para poder tener un mayor control en el Robot Cartográfico, ya que como se puede ver en el video, al tener líneas paralelas para el frenado, un posible error en la mecánica de los [motorreductores](/Arduino/Motores) ocasionó que fuera necesario tener que reposicionar el robot en el camino.
-- El módulo de cámara se encuentra en el repositorio, aunque este no fue posible implementarse finalmente los avances presentados quedan disponibles en la misma carpeta de módulos como ayuda para una posible implementación.
+# ¿Cómo compilar y subir el firmware?
+Una vez tenemos el firmware completamente escrito, tendremos que compilarlo en un archivo binario legible para el SoC. Este paso resulta sencillo debido a que es exactamente como compilar en el lenguaje C, además de que contamos con un archivo makefile por lo que el proceso que seguiremos inicia con asegurarnos de:
+- Tener añadido el Path de Litex en la terminal
+- Haber guardado todos los cambios en nuestros archivos de C.
+Una vez hecho esto, abrimos una terminal en este directorio y ejecutamos el comando:
+```ssh
+make all
+```
+Comando que debe resultar sin errores y, una vez hecho esto, ya tenemos a nuestra disposición un archivo `firmware.bin` que podremos subir al SoC mediante la terminal de litex, abriendo una terminal en el directorio raíz del proyecto y ejecutando los comandos:
+```ssh
+sudo chmod 777 /dev/ttyUSB1
+litex_term /dev/ttyUSB1 --kernel firmware/firmware.bin
+```
