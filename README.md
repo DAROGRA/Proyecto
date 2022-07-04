@@ -1,4 +1,4 @@
-# BUHO, Radar Puntos Ciego
+# BUHO, Radar de Puntos Ciego
 
 # Autores 💡
 
@@ -10,7 +10,7 @@
 https://www.overleaf.com/read/frnqhqvtksbk
 
 
-Este es el repositorio del Robot Cartógrafo para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El robot cartógrafo se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys A7, y periféricos los cuales sirven para cumplir el objetivo del proyecto, su funcionamiento principal radica en la generación de un vector donde se encuentran las direcciones del robot en cada instante de tiempo según el análisis del entorno en el que se encuentra por medio del sensor de ultrasonido, sensores infrarrojos y envio de datos por medio de bluetooth, y por otra parte se tiene un registro de la temperatura y humedad de las condiciones ambientales a las cuales esta sometido, siendo este nuestro periférico adicional.
+Este es el repositorio del radar de puntos ciegos para vehículos de carga (Buho) para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El radar Buho se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys 4DDR, y periféricos los cuales sirven para cumplir el objetivo del proyecto. Su funcionamiento principal radica en la monitorización 180° de los puntos ciegos de un vehículo de carga pesada por medio de un radar que emplea el ultrasonido como medio de detección de objetos y el envio y recepción de datos por medio de bluetooth.
 
 ![Screenshot](/Graficos/ciegos.jpg)
 
