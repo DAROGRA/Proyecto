@@ -43,10 +43,14 @@ En cada uno de los links se presenta el módulo en verilog y una explicación de
 - [Servomotor (pwm)](module/verilog/Servo/ServoRadar.v)
 - [Bluetooth](/firmware/uart1.c)
 
-En el caso del Ultrasonido se tienen cargados los archivos de drivers usados para el funcionamiento del  periferico, [Libreria US](/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd), [Libreria US](/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd)
+En el caso del Ultrasonido se tienen cargados los archivos de drivers usados para el funcionamiento del  periferico, [Libreria US](/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd), [Libreria US](/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd), y un Top donde se llaman las entradas y salidas en vhdl [TOP US](/module/verilog/ultrasonidoprueba/sensor_prueba.vhd), para el caso del servomotor se crearon desde verilog los estados en los que estaria el motor [Servo](/module/verilog/Servo/ServoRadar.v) y para el modulo de transmision y recepcion por medio de Bluerooth se tiene el codigo por medio de c: [Bluetooth](/firmware/uart1.c)
 
 ## Alimentación:
 Para la alminetacion de los perifericos se hizo uso de un arduino UNO, se obtiene una alimentacion de 5V, y se deja igualemnte una tierra en una baquela universal, y se procede a alimentar todos los perifericos por medio de esta baquela. 
+
+
+## Aplicacion:
+Se diseño por medio de la pagina Kodula, la cual permite la creacion de programas para android por medio del desplazamiento de bloques, todo el diseño y explicacion de los bloques esta en [App](/module/verilog/Servo/ServoRadar.v)
 
 ## Diseño:
 Para el diseño de los cases se realizo un modelado con un periferico por medio del programa de Autodesk Thinkercad, y se montaron los diseños en la siguiente carpeta [Diseño](/Modelos_3D).
@@ -64,6 +68,6 @@ Se encuentra a continuación un enlace con los vídeos de funcionamiento de cada
 
 ## Consideraciones Finales :
 
-- Teniendo en cuenta dificultades presentadas dentro de la realización del presente proyecto, se recomienda tener especial cuidado con la conexión de todas las tierras del circuito a un punto fijo, ya que el correcto funcionamiento de algunos módulos (por no decir de todos) depende de esto. Si se llega a tener un movimiento extraño en el [servomotor](/module/verilog/PWM) o si se está recibiendo extraños caracteres por el celular debido al módulo [Bluetooth](/Arduino/Bluetooth), son algunos de los problemas presentados, si no se tiene en cuenta lo anterior.
-- Se recomienda realizar un correcto uso del [sensor infrarrojo](/module/verilog/Infrarrojo/) para poder tener un mayor control en el Robot Cartográfico, ya que como se puede ver en el video, al tener líneas paralelas para el frenado, un posible error en la mecánica de los [motorreductores](/Arduino/Motores) ocasionó que fuera necesario tener que reposicionar el robot en el camino.
-- El módulo de cámara se encuentra en el repositorio, aunque este no fue posible implementarse finalmente los avances presentados quedan disponibles en la misma carpeta de módulos como ayuda para una posible implementación.
+- Para el caso de la tablet se deja planteado un nuevo funcionamiento el cual consiste en la creacion de un nuevo estado por medio del cual se agregan direccionales por medio de las cuales se puede fijar el servomotor en la direccion por donde se plantee girar, con el fin de tener una mayor precision de los objetos que puedan estar demasiado cerca al momento de realizar el giro.
+- Se recomienda un manejo del formato en el que se envia y reciben los datos del modulo Bluetooth [Bluetooth](/firmware/uart1.c), debido a que su funcion esta creada para el envio de 1 CHAR a la vez y el modulo de Bluetooth esta diseñado para el envio de 8 bits, por lo que pueden haber errores con los datos que se envian al trabajr con Int, ASCII, entre otros
+- Es imporatante conocer lo que se envia en la aplicacion que se diseño debido a que el programa que se realizo puede tener problemas al leer tamaños de bloques y formatos de datos.
