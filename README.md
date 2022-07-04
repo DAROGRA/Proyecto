@@ -39,12 +39,9 @@ Se presenta la información del código usado para el desarrollo del funcionamie
 ## [Periféricos](/module) :
 En cada uno de los links se presenta el módulo en verilog y una explicación detallada del código utilizado para su funcionamiento.
 
-- [Ultrasonido](/module/verilog/Ultrasonido/)
-- [Infrarrojos](/module/verilog/Infrarrojo/)
-- [Servomotor (pwm)](/module/verilog/PWM)
-- [Motores](/Arduino/Motores)
-- [Bluetooth](/Arduino/Bluetooth)
-- [Sensor de Temperatura](/Arduino/SensorTemperatura)
+- [Ultrasonido](/module/verilog/ultrasonidoprueba)
+- [Servomotor (pwm)](module/verilog/Servo/ServoRadar.v)
+- [Bluetooth](/firmware/uart1.c)
 
 ## Alimentación:
 Para la alminetacion de los perifericos se hizo uso de un arduino UNO, se obtiene una alimentacion de 5V, y se deja igualemnte una tierra en una baquela universal, y se procede a alimentar todos los perifericos por medio de esta baquela. 
