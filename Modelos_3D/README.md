@@ -3,7 +3,7 @@
 Se tomo el modelo de cada modulo y por medio de https://www.tinkercad.com/dashboard, luego se realiza la impresion mediante una impresora ANYCUBIC Mega Pro, se coloco entonces el modelo del ultrasonido HC-SR04, HC-05 para el modulo de Bluetooth:
 
 
-![Screenshot](/Modelos_3D/modelo_ultrasonido.png)
+![Screenshot](/Modelos_3D/modelo_ultranido.png)
 
 Modelo base usado para el diseño de los case.
 
