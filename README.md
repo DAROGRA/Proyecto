@@ -9,12 +9,12 @@
 
 Este es el repositorio del Robot Cartógrafo para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El robot cartógrafo se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys A7, y periféricos los cuales sirven para cumplir el objetivo del proyecto, su funcionamiento principal radica en la generación de un vector donde se encuentran las direcciones del robot en cada instante de tiempo según el análisis del entorno en el que se encuentra por medio del sensor de ultrasonido, sensores infrarrojos y envio de datos por medio de bluetooth, y por otra parte se tiene un registro de la temperatura y humedad de las condiciones ambientales a las cuales esta sometido, siendo este nuestro periférico adicional.
 
-![Screenshot](/Imagenes y Videos/SoC.png)
+![Screenshot](/Imagenes_y_Videos/SoC.png)
 
 Como periféricos se implementaron un Sensor de ultrasonido HC-sr04 el cual es usado para la deteccion de vehiculos en un rango de 2 metros por medio de ondas de sonido, tambien se usa un Módulo Bluetooth HC06 el cual permite la comunicacion entre los datos recibidos del sensor y el servo motor, para ser enviados hasta un dispositivo que reciba los datos y los grafique en una interfaz grafica, para lograr un movimiento del sensor se usa adicionalmente un Servomotor MG90, el cual esta caracterizado por 6 estados para realiar un barrido de 180° recubriendo el punto ciego trasero de los camiones.
 
 Se presenta un diagrama con las conexiones entre los diferentes periféricos y el SoC:
-![Screenshot](/Imagenes y Videos/SoC.png)
+![Screenshot](/Imagenes_y_Videos/SoC.png)
 
 El mapa de memoria se presenta a continuación.
 | csr_base| Direccion |
