@@ -7,7 +7,7 @@
 * Juan David Lopez ⚡
 
 
-Este es el repositorio del radar de puntos ciegos para vehículos de carga (Buho) para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El radar Buho se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys 4DDR, y periféricos los cuales sirven para cumplir el objetivo del proyecto. Su funcionamiento principal radica en la monitorización 180° de los puntos ciegos de un vehículo de carga pesada por medio de un radar que emplea el ultrasonido como medio de detección de objetos y el envio y recepción de datos por medio de bluetooth.
+Este es el repositorio del Robot Cartógrafo para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El robot cartógrafo se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys A7, y periféricos los cuales sirven para cumplir el objetivo del proyecto, su funcionamiento principal radica en la generación de un vector donde se encuentran las direcciones del robot en cada instante de tiempo según el análisis del entorno en el que se encuentra por medio del sensor de ultrasonido, sensores infrarrojos y envio de datos por medio de bluetooth, y por otra parte se tiene un registro de la temperatura y humedad de las condiciones ambientales a las cuales esta sometido, siendo este nuestro periférico adicional.
 
 ![Screenshot](/Graficos/ciegos.jpg)
 
@@ -26,19 +26,15 @@ El mapa de memoria se presenta a continuación.
 |display|0x82001800|
 |ledRGB_1|0x82002000|
 |ledRGB_2|0x82002800|
-|vga_cntrl|0x82003000|
-|uart1|0x82004000|
-|uart2|0x82005000|
-|uart3|0x82006000|
-|infra_cntrl|0x82006800|
-|pwm_cntrl|0x82007000|
-|ultrasonido|0x82007800|
-|ctrl|0x82008000|
-|timer0|0x82008800|
-|uart|0x82009000|
+|servomotor_ctr|0x82003000|
+|ultrasound_ctr|0x82003800|
+|uart_txrx|0x82004800|
+|ctrl|0x82005004|
+|timer0|0x82005800|
+|uart|0x82006000|
 
 ## [Firmware](/firmware/) :
-Se presenta la información del código usado para el desarrollo del funcionamiento del robot cartógrafo y principalmente el archivo [main.c](/firmware/main.c). 
+Se presenta la información del código usado para el desarrollo del funcionamiento del radar y principalmente el archivo [main.c](/firmware/main.c). 
 
 ## [Periféricos](/module) :
 En cada uno de los links se presenta el módulo en verilog y una explicación detallada del código utilizado para su funcionamiento.
