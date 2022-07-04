@@ -68,7 +68,7 @@ Para la prueba del Modulo se envia a la tablet primero una posicion con una dist
 
 Pruebas conjuntas [PruebasUS](/Graficos/20220630_160500.mp4)
 
-## Consideraciones Finales : [PruebasUS](/Graficos/20220630_153829.mp4)
+## Consideraciones Finales :
 
 - Para el caso de la tablet se deja planteado un nuevo funcionamiento el cual consiste en la creacion de un nuevo estado por medio del cual se agregan direccionales por medio de las cuales se puede fijar el servomotor en la direccion por donde se plantee girar, con el fin de tener una mayor precision de los objetos que puedan estar demasiado cerca al momento de realizar el giro.
 - Se recomienda un manejo del formato en el que se envia y reciben los datos del modulo Bluetooth [Bluetooth](/firmware/uart1.c), debido a que su funcion esta creada para el envio de 1 CHAR a la vez y el modulo de Bluetooth esta diseñado para el envio de 8 bits, por lo que pueden haber errores con los datos que se envian al trabajr con Int, ASCII, entre otros
