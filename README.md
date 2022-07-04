@@ -56,17 +56,16 @@ Se diseño por medio de la pagina Kodula, la cual permite la creacion de program
 Para el diseño de los cases se realizo un modelado con un periferico por medio del programa de Autodesk Thinkercad, y se montaron los diseños en la siguiente carpeta [Diseño](/Modelos_3D).
 
 ## Pruebas de Funcionamiento :
-Se encuentra a continuación un enlace con los vídeos de funcionamiento de cada uno de los periféricos y el resultado final. [aqui](https://drive.google.com/drive/folders/112-6SYxrrSyqni91OqtPZYYySc63U7gP?usp=sharing)
 
-- Detección infrarrojo
-- Ultrasonido/Giro Izquierda
-- Ultrasonido/Giro Derecha
-- Servomotor
-- Bluetoot
-- Sensor de Temperatura y Humedad
-- Resultado Final
+Para el caso del ultrasonido se realizo la medicion de distancia y se tiene: [PruebasUS](/Graficos/20220630_160500.mp4)
 
-## Consideraciones Finales :
+Para el caso del servomotor se revisa el funcionamiento de la lectura en la posicion en la que se encuentra: [PruebasServo](/Graficos/20220630_160546.mp4)
+
+Para la prueba del Modulo se envia a la tablet primero una posicion con una distancia fija desde la aplicacion: [PruebaBT](/Graficos/radar.mp4)
+
+Pruebas conjuntas [PruebasUS](/Graficos/20220630_160500.mp4)
+
+## Consideraciones Finales : [PruebasUS](/Graficos/20220630_153829.mp4)
 
 - Para el caso de la tablet se deja planteado un nuevo funcionamiento el cual consiste en la creacion de un nuevo estado por medio del cual se agregan direccionales por medio de las cuales se puede fijar el servomotor en la direccion por donde se plantee girar, con el fin de tener una mayor precision de los objetos que puedan estar demasiado cerca al momento de realizar el giro.
 - Se recomienda un manejo del formato en el que se envia y reciben los datos del modulo Bluetooth [Bluetooth](/firmware/uart1.c), debido a que su funcion esta creada para el envio de 1 CHAR a la vez y el modulo de Bluetooth esta diseñado para el envio de 8 bits, por lo que pueden haber errores con los datos que se envian al trabajr con Int, ASCII, entre otros
