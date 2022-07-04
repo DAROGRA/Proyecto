@@ -1,10 +1,10 @@
-# Pill-Dispenser-with-FPGA and ALEXA
+# BUHO, Radar Puntos Ciego
 
-# Autores 🖋️
+# Autores 💡
 
-* Juan Manuel Sarmiento 🧑‍🔧
-* Nicolás Moreno Zamora 🧑‍💻
-* Alejandro Fernández Astaiza 🧑‍💼
+* Daniel Andres Rojas Granados ⚡
+* Diana Sofia Lopez ⚡
+* Juan David Lopez ⚡
 
 Este es el repositorio del proyecto final de la asignatura *Electrónica Digital II* del semestre 2022-1 (*Universidad Nacional de Colombia - Sede Bogotá*). A continuación se mostrará el proyecto de un Dispensador de medicamentos conformado por una arquitectura de SoC, donde a partir de un microprocesador y diferentes periféricos se realizan operaciones que permiten al dispensador de medicamentos indicarle a un paciente en que horario y que medicamentos debe consumir específicamente.
 
