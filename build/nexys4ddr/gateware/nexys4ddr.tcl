@@ -6,6 +6,13 @@ set_msg_config -id {Common 17-55} -new_severity {Warning}
 
 # Add Sources
 
+read_verilog {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/Servo/ServoRadar.v}
+read_vhdl -vhdl2008 {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd}
+set_property library work [get_files {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd}]
+read_vhdl -vhdl2008 {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd}
+set_property library work [get_files {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd}]
+read_vhdl -vhdl2008 {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd}
+set_property library work [get_files {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd}]
 read_verilog {/opt/Litex/pythondata-cpu-picorv32/pythondata_cpu_picorv32/verilog/picorv32.v}
 read_verilog {/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v}
 

@@ -9,7 +9,7 @@ entity sensor_prueba is
 port( CLK     : IN  STD_LOGIC;
       ECO     : IN  STD_LOGIC;
       TRIGGER : OUT STD_LOGIC;
-		LED     : OUT STD_LOGIC
+      medida : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
 end sensor_prueba;
 
@@ -21,12 +21,12 @@ PORT( CLK          : IN  STD_LOGIC;
       ECO          : IN  STD_LOGIC;
       TRIGGER      : OUT STD_LOGIC;
       DATO_LISTO   : OUT STD_LOGIC;
-      DISTANCIA_CM : OUT STD_LOGIC_VECTOR(8 DOWNTO 0)
+      DISTANCIA_CM : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
      );
 end component INTESC_LIB_ULTRASONICO_RevC;
 
 signal dato_listo   : std_logic := '0';
-signal distancia_cm : std_logic_vector(8 downto 0) := (others => '0');
+signal distancia_cm : std_logic_vector(7 downto 0) := (others => '0');
 signal distancia, porcentaje, uni, dec   : integer;
 
 begin
@@ -44,20 +44,12 @@ process(CLK)
 
 begin
 
-distancia<=to_integer(unsigned(distancia_cm(8 downto 0)));
-porcentaje <= distancia;
+
 
 if rising_edge(CLK) then
 
 	if dato_listo = '1' then
-	if porcentaje< 120 then
-		if porcentaje > 0 then
-			LED<= '1';
-		end if;
-		else
-			LED <= '0';
-
-		end if;
+    medida<=distancia_cm;
 	end if;
 
 

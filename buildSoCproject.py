@@ -29,13 +29,11 @@ class BaseSoC(SoCCore):
 		# add Here verilog sources
 
 		####-----SERVO-----####
-		platform.add_source("module/verilog/Servo/contador.v")
-		platform.add_source("module/verilog/Servo/divisor.v")
-		platform.add_source("module/verilog/Servo/divisorF.v")
-		platform.add_source("module/verilog/Servo/motor.v")
-		platform.add_source("module/verilog/Servo/servoradar.v")
+		platform.add_source("module/verilog/Servo/ServoRadar.v")
 		####-----ultrasonido-----####
-
+		platform.add_source("module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd")
+		platform.add_source("module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd")
+		platform.add_source("module/verilog/ultrasonidoprueba/sensor_prueba.vhd")
 
 		# SoC with CPU
 		SoCCore.__init__(self, platform,
@@ -78,26 +76,42 @@ class BaseSoC(SoCCore):
 
 		#Servo uwu
 		SoCCore.add_csr(self, "servo_driver")
-		self.submodules.servo_driver = servo.servoUS(platform.request("pwm"))
+		self.submodules.servo_driver = pwm.servoUS(platform.request("pwm"))
 
 		# ultrasonido
 		SoCCore.add_csr(self,"us_driver")
-		self.submodules.us_driver = ultrasonido.us(platform.request("echo"),platform.request("trig"))
+		self.submodules.us_driver = ultrasonido.us(platform.request("ECO"),platform.request("TRIGGER"))
 
-		#UART????
+
+		#UARTUWU
+
 		self.submodules.uart1_phy = uart.UARTPHY(
-		pads     = platform.request("uart1"),
-		clk_freq = self.sys_clk_freq,
-		baudrate = 9600)
-				self.submodules.uart1 = ResetInserter()(uart.UART(self.uart1_phy,
-					tx_fifo_depth = 16,
-					rx_fifo_depth = 16))
-				self.csr.add("uart1_phy", use_loc_if_exists=True)
-				self.csr.add("uart1", use_loc_if_exists=True)
-				if hasattr(self.cpu, "interrupt"):
-					self.irq.add("uart1", use_loc_if_exists=True)
-				else:
-					self.add_constant("UART_POLLING")
+			pads     = platform.request("uart1"),
+			clk_freq = self.sys_clk_freq,
+			baudrate = 9600)
+		self.submodules.uart1 = ResetInserter()(uart.UART(self.uart1_phy,
+			tx_fifo_depth = 16,
+			rx_fifo_depth = 16))
+		self.csr.add("uart1_phy", use_loc_if_exists=True)
+		self.csr.add("uart1", use_loc_if_exists=True)
+		if hasattr(self.cpu, "interrupt"):
+			self.irq.add("uart1", use_loc_if_exists=True)
+		else:
+			self.add_constant("UART_POLLING")
+		#UART????
+	#	self.submodules.uart1_phy = uart.UARTPHY(
+	#	pads     = platform.request("uart1"),
+	#	clk_freq = self.sys_clk_freq,
+	##	baudrate = 9600)
+	#			self.submodules.uart1 = ResetInserter()(uart.UART(self.uart1_phy,
+	#				tx_fifo_depth = 16,
+	#				rx_fifo_depth = 16))
+	#			self.csr.add("uart1_phy", use_loc_if_exists=True)
+	#			self.csr.add("uart1", use_loc_if_exists=True)
+	#			if hasattr(self.cpu, "interrupt"):
+	#				self.irq.add("uart1", use_loc_if_exists=True)
+	#			else:
+	#				self.add_constant("UART_POLLING")
 
 # Build --------------------------------------------------------------------------------------------
 

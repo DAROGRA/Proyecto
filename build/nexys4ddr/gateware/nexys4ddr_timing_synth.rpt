@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date         : Sat Jun 25 10:38:45 2022
+| Date         : Thu Jun 30 12:45:48 2022
 | Host         : alejandro-Legion-Y540-15IRH-PG0 running 64-bit Ubuntu 20.04.4 LTS
 | Command      : report_timing_summary -file nexys4ddr_timing_synth.rpt
 | Design       : nexys4ddr
@@ -53,7 +53,7 @@ Table of Contents
 
 1. checking no_clock
 --------------------
- There are 2549 register/latch pins with no clock driven by root clock pin: clk (HIGH)
+ There are 3054 register/latch pins with no clock driven by root clock pin: clk (HIGH)
 
 
 2. checking constant_clock
@@ -68,21 +68,21 @@ Table of Contents
 
 4. checking unconstrained_internal_endpoints
 --------------------------------------------
- There are 6807 pins that are not constrained for maximum delay. (HIGH)
+ There are 7988 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
 
 5. checking no_input_delay
 --------------------------
- There are 21 input ports with no input delay specified. (HIGH)
+ There are 23 input ports with no input delay specified. (HIGH)
 
  There are 0 input ports with no input delay but user has a false path constraint.
 
 
 6. checking no_output_delay
 ---------------------------
- There are 39 ports with no output delay specified. (HIGH)
+ There are 42 ports with no output delay specified. (HIGH)
 
  There are 0 ports with no output delay but user has a false path constraint
 

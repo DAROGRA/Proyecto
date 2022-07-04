@@ -9,6 +9,7 @@
 
 #include "delay.h"
 #include "display.h"
+#include "uart1.h"
 
 static char *readstr(void)
 {
@@ -78,7 +79,11 @@ static void help(void)
 	puts("display                         - display test");
 	puts("rgbled                          - rgb led test");
 	puts("vga                             - vga test");
+	puts("UlSon                         - pruba perrona test");
 	puts("lab4                          - ledsd test");
+	puts("servo                          - lservoouwutest");
+	puts("rx                              -Prueba Bluetooth");
+	puts("tx                              -Prueba Bluetoothx2ptos");
 }
 
 static void reboot(void)
@@ -133,6 +138,22 @@ static void led_test(void)
 
 }
 
+static void writeint(uint32_t val)
+{
+	uint32_t i, digit;
+
+	for (i=0; i<8; i++) {
+		digit = (val & 0xF0000000) >> 28;
+		if (digit >= 0xA) {
+			uart_putchar('A'+digit-10);//uart_putchar('Y');
+			}
+		else{
+			uart_putchar('0'+digit);//uart_putchar('N');
+		val <<= 4;
+		}
+	}
+}
+
 static void lab4_test(void)
 {
 	unsigned int i;
@@ -151,6 +172,21 @@ static void lab4_test(void)
 
 }
 
+static void US_test(void)
+{
+	printf("Test del los leds... se interrumpe con el botton 1\n");
+	while(!(buttons_in_read()&1)) {
+			int done=us_driver_medida_read();
+			printf("distancia: %d \n",done);
+		delay_ms(200);
+	}
+
+}
+
+
+
+
+
 
 static void switch_test(void)
 {
@@ -165,6 +201,102 @@ static void switch_test(void)
 		}
 	}
 }
+
+
+/*static void rx_test(void){
+	char temp;
+	char state[4] = "0";
+	int i = 0;
+	while(i<4){
+		temp = uart1_read();
+		printf("temp: %c\n",temp);
+		state[i] = temp;
+		i=i+1;
+		}
+		printf("state: %d\n",sizeof(state));
+	}*/
+
+	static void tx_test(void){
+		char temp;
+		char state[4] = "0";
+		int i = 0;
+
+
+
+		}
+
+
+		static void servo_test(void){
+
+			int nuevad=0;
+			int posicionn=0;
+			int dir=1;
+			char value = '0';
+			char preubalect = '0';
+			char preubadi = '0';
+			char temp='0';
+			char strr[4];
+
+			while(!(buttons_in_read()&1)) {
+			if(posicionn==7){
+			    dir=-1;
+			}
+			if(posicionn==1){
+			    dir=1;
+			}
+
+
+		/*	nuevad=us_driver_medida_read();
+			int unidad=nuevad%10;
+			int decena=(nuevad/10)%10;
+			int centena=(nuevad/100)%10;
+
+			strr[0]=centena+'0';
+			strr[1]=decena+'0';
+			strr[2]=unidad+'0';
+			strr[3]='\0';
+
+			int i =0;
+			for(i=0;i<4;i++){
+				uart1_write(strr[i]);
+
+}
+printf("distancia: %s \n",strr);
+int doner=us_driver_medida_read();
+printf("distancia: %d \n",doner);*/
+
+posicionn=posicionn+dir;
+servo_driver_ctr_write(posicionn);
+printf("pos %d", posicionn);
+preubalect=posicionn+'0';
+printf("poschar %c", preubalect);
+uart1_write(preubalect);
+
+
+delay_ms(500);
+			}
+
+			}
+			/*printf("distancia: %c \n",nuevad);
+			preubadi=nuevad+'0';
+			printf("dischar %c", preubadi);
+			uart1_write(preubadi);
+
+			temp = uart1_read();
+			printf("%c",temp);
+			delay_ms(500);
+			preubalect = uart1_read();
+			printf("%c\n",preubalect);
+			delay_ms(500);
+			/*h=uart1_read();
+			printf("%s\n", h);
+			*/
+
+
+
+
+
+
 
 static void rgbled_test(void)
 {
@@ -225,6 +357,11 @@ static void vga_test(void)
 
 
 
+
+
+
+
+
 static void console_service(void)
 {
 	char *str;
@@ -240,7 +377,16 @@ static void console_service(void)
 	else if(strcmp(token, "led") == 0)
 		led_test();
 	else if(strcmp(token, "lab4") == 0)
-			lab4_test();
+		lab4_test();
+	else if(strcmp(token, "UlSon") == 0)
+		US_test();
+	/*else if(strcmp(token, "rx") == 0)
+		rx_test();
+	else if(strcmp(token, "tx") == 0)
+		tx_test();*/
+	else if(strcmp(token, "servo") == 0)
+		servo_test();
+
 	else if(strcmp(token, "switch") == 0)
 		switch_test();
 	else if(strcmp(token, "display") == 0)
@@ -259,7 +405,7 @@ int main(void)
 	uart_init();
 	//timer_init_irq(1000);
 
-    puts("\n                     HOLA HOLA :')              \n");
+    puts("\n                     prueba 10:15              \n");
 	puts("\nSoC - RiscV project UNAL 2022-1-- CPU testing software built "__DATE__" "__TIME__"\n");
 	help();
 	prompt();

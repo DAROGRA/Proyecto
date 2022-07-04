@@ -11,7 +11,7 @@ Este es el repositorio del Robot Cartógrafo para la Asignatura de Electrónica 
 
 ![Screenshot](/Imágenes/Carro1.jpeg)
 
-Como periféricos se implementaron un sensor de temperatura SHT31, un sensor infrarrojo seguidor de línea de 5 canales, 2 motores-reductores conectados a un puente H, un módulo bluetooth, un servo motor y un ultradonido HC-sr04. Se utilizó también un microprocesador Arduino Mega 2560 para realizar algunas conexiones y control de algunos procesos, los cuales se describirán más adelante. 
+Como periféricos se implementaron un Sensor de ultrasonido HC-sr04 el cual es usado para la deteccion de vehiculos en un rango de 2 metros por medio de ondas de sonido, tambien se usa un Módulo Bluetooth HC06 el cual permite la comunicacion entre los datos recibidos del sensor y el servo motor, para ser enviados hasta un dispositivo que reciba los datos y los grafique en una interfaz grafica, para lograr un movimiento del sensor se usa adicionalmente un Servomotor MG90, el cual esta caracterizado por 6 estados para realiar un barrido de 180° recubriendo el punto ciego trasero de los camiones.
 
 Se presenta un diagrama con las conexiones entre los diferentes periféricos y el SoC:
 ![Screenshot](/Imágenes/SoC.jpg)

@@ -6,7 +6,7 @@
 <Project Version="7" Minor="40" Path="/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="87e5aaa9a9ed43ddaca811cfd7b99aee"/>
+    <Option Name="Id" Val="f8c1aba8f6904b3598bd48f43ac5f477"/>
     <Option Name="Part" Val="xc7a100tcsg324-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -59,6 +59,34 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
       <Filter Type="Srcs"/>
+      <File Path="$PPRDIR/../../../module/verilog/Servo/ServoRadar.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../../module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd">
+        <FileInfo SFType="VHDL2008">
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../../module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd">
+        <FileInfo SFType="VHDL2008">
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../../module/verilog/ultrasonidoprueba/sensor_prueba.vhd">
+        <FileInfo SFType="VHDL2008">
+          <Attr Name="Library" Val="work"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../../../../../../../opt/Litex/pythondata-cpu-picorv32/pythondata_cpu_picorv32/verilog/picorv32.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
