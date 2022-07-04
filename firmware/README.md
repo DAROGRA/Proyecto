@@ -1,73 +1,274 @@
-# BUHO, Radar Puntos Ciego
+# Firmware
+## Funciones de prueba
+Una vez construído nuestro SoC, tenemos a nuestra disposición todos los módulos construídos, para usarlos de la manera que definamos. Para aprovecharlos, debemos escribir el software que los va a controlar y de esta manera los pondrá a nuestra orden.
 
-# Autores 💡
+Para construir nuestro firmware, tenemos que tener claro cómo funcionan nuestros módulos y qué podemos leer y escribir de ellos. Sabiendo esto, Litex y Migen se han encargado de abstraer estos procesos mediante funciones generadas que se encuentran en el archivo [CSR.h](https://github.com/unal-edigital2-labs/wp08-2021-2-gr-06/blob/main/build/nexys4ddr/software/include/generated/csr.h) que podremos utilizar al escribir el programa que ejecutará nuestro SoC.
 
-* Daniel Andres Rojas Granados ⚡
-* Diana Sofia Lopez ⚡
-* Juan David Lopez ⚡
+En nuestro caso, se escribieron funciones de prueba para cada módulo implementado con el objetivo de comprobar su respectiva operabilidad y, por supuesto, el programa principal con el cual el carro se encontrará en capacidad de recorrer un laberinto, reconocer su entorno y transmitir la información encontrada a un usuario por medio de la terminal y el modulo Bluethooth.
+
+A continuación presentaremos las funciones integradas junto con sus respectivas explicaciones.
+
+### test_ir()
+
+```C
+static void test_ir(void){
+	while(!(buttons_in_read()&1)) {
+		leds_out_write(infrarrojo_cntrl_distancia_read());
+		delay_ms(50);
+		}
+}
+```
+En esta función vamos a presentar mediante los LED's integrados de la FPGA la lectura obtenida por el sensor infrarrojo en intervalos de 50ms hasta que presionemos un pulsador de su tablero.
+
+### test_us()
+```C
+static void test_us(void){
+	while(!(buttons_in_read()&1)) {
+		ultrasonido_orden_write(1);
+		bool done = false;
+		while(!done){
+			done = ultrasonido_done_read();
+		}
+		leds_out_write(ultrasonido_d_read());
+		ultrasonido_orden_write(0);
+		delay_ms(50);
+		}
+}
+```
+En esta función, haremos algo similar a lo hecho con nuestra prueba del funcionamiento del sensor infrarrojo, ahora con el sensor de ultrasonido. Este difiere en que el módulo de ultrasonido no tiene lecturas repetidas sino que se le debe dar la orden realizar todo el proceso relacionado con hacer la respectiva medición y de la misma manera establecer un reset para que este esté disponible para hacerla nuevamente.
+### pwm_test()
+```C
+static void test_pwm(void){
+	pwm_cntrl_orden_write(4);
+	delay_ms(3000);
+	pwm_cntrl_orden_write(5);
+	delay_ms(3000);
+	pwm_cntrl_orden_write(6);
+	delay_ms(3000);
+	pwm_cntrl_orden_write(4);
+	delay_ms(500);
+}
+```
+Con esta función, hacemos uso de la entrada "orden" previamente definida para el módulo PWM que nos permite girar un servomotor a -90°, 0° y 90°. 
+### uart3_test()
+```C
+static void uart3_test(void){
+	uart3_rxtx_write('A');
+	printf("A");
+	delay_ms(500);
+}
+```
+En esta función, probaremos la UART que implementamos en pines arbitrarios de la FPGA, para ello, ponemos los respectivos pines de Rx y Tx en corto, pues probaremos de esta manera en la consola que tanto la escritura como la lectura de estos es correcta.
+### rotate_car()
+```C
+void rotate_car(bool right){
+	if (right){
+		// Rotación a la derecha
+		uart1_rxtx_write('J');
+		delay_ms(350);
+		uart1_rxtx_write('I');
+		delay_ms(500);
+	} else {
+		// Rotación a la izquierda
+		uart1_rxtx_write('H');
+		delay_ms(350);
+		uart1_rxtx_write('I');
+		delay_ms(500);
+	}
+}
+```
+Esta función nos permite rotar el carro a la izquierda o a la derecha, para ello, hacemos uso de la UART1 que escribirá al Arduino la instrucción relacionada al giro de los motores con este fin. Al escribir la instrucción, le daremos un espacio de 350ms que es el tiempo que en nuestro caso resultó efctivo para realizar un giro adecuado y posteriormente detenemos todo el movimiento por 500ms para lograr una mayor estabilidad.
+### forward()
+```C
+void forward(void){
+	printf("Avanzando\n");
+	uart1_rxtx_write('G');	
+	while(infra_cntrl_output_infra_read() != 31){
+		printf("Saliendo de la linea negra\n");
+	}
+		
+	while(1) {
+		printf("buscando linea negra\n");
+		if (infra_cntrl_output_infra_read() < 31)
+			break;
+		
+	}
+	uart1_rxtx_write('I');
+	
+}
+```
+Con esta función, buscamos que el carro avance hasta encontrar una línea negra en el suelo dadas las condiciones que se nos fueron dadas para el laberinto. Para ello escribimos la señal de avanzar por medio de la UART1 al Arduino y de allí en adelante revisamos constantemente la salida provista por el sensor infrarrojo que, cuando detecte una distancia mayor a 2 (parámetro que nos entregó buenos resultados para detectar líneas negras), envíe la señal de alto para detener el movimiento.
+
+```C
+static void temhum_test(void){
+	unsigned int temp[2];
+	temp[0] = uart2_rxtx_read();
+	printf("Temperatura: %d\n", temp[0]);
+	temp[1] = uart2_rxtx_read();
+	printf("Húmedad: %ld \n", temp[1]);
+}
+```
+En esta fuinción se obtiene de manera individual el valor de la temperatura y la humedad obtenida por el UART del Arduino.
+
+Todos los resultados se pueden ver en vídeo [aquí](https://drive.google.com/drive/folders/112-6SYxrrSyqni91OqtPZYYySc63U7gP?usp=sharing).
+
+## Programa principal  Recorrido del laberinto 
+Antes de proceder con la explicación de nuestro algoritmo para recorrer el laberinto, recordaremos algunas condiciones y aspectos generales planteados.
+
+ - El laberinto consiste cualquier recorrido donde solo sea posible una accion entre avanzar, girar a la izquierda o a la derecha.
+ - El carro siempre tendrá una vía libre a la cual avanzar, de lo contrario, se asumirá que es el final del recorrido.
+ - La información se presentará en un vector en la que la información en direcciones absolutas se presenta de la manera [UP, LEFT, DOWN].
+ 
+Cabe recordar que este se encuentra adecuadamente comentado y en su totalidad en el archivo [main.c](https://github.com/unal-edigital2-labs/wp08-2021-2-gr-06/blob/main/firmware/main.c) de la carpeta firmware.
 
 
-Este es el repositorio del Robot Cartógrafo para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El robot cartógrafo se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys A7, y periféricos los cuales sirven para cumplir el objetivo del proyecto, su funcionamiento principal radica en la generación de un vector donde se encuentran las direcciones del robot en cada instante de tiempo según el análisis del entorno en el que se encuentra por medio del sensor de ultrasonido, sensores infrarrojos y envio de datos por medio de bluetooth, y por otra parte se tiene un registro de la temperatura y humedad de las condiciones ambientales a las cuales esta sometido, siendo este nuestro periférico adicional.
+# ¿Cómo compilar y subir el firmware?
+Una vez tenemos el firmware completamente escrito, tendremos que compilarlo en un archivo binario legible para el SoC. Este paso resulta sencillo debido a que es exactamente como compilar en el lenguaje C, además de que contamos con un archivo makefile por lo que el proceso que seguiremos inicia con asegurarnos de:
+- Tener añadido el Path de Litex en la terminal
+- Haber guardado todos los cambios en nuestros archivos de C.
+Una vez hecho esto, abrimos una terminal en este directorio y ejecutamos el comando:
+```ssh
+make all
+```
+Comando que debe resultar sin errores y, una vez hecho esto, ya tenemos a nuestra disposición un archivo `firmware.bin` que podremos subir al SoC mediante la terminal de litex, abriendo una terminal en el directorio raíz del proyecto y ejecutando los comandos:
+```ssh
+sudo chmod 777 /dev/ttyUSB1
+litex_term /dev/ttyUSB1 --kernel firmware/firmware.bin
+```
+# Firmware
+## Funciones de prueba
+Una vez construído nuestro SoC, tenemos a nuestra disposición todos los módulos construídos, para usarlos de la manera que definamos. Para aprovecharlos, debemos escribir el software que los va a controlar y de esta manera los pondrá a nuestra orden.
 
-![Screenshot](/Graficos/SoC.png)
+Para construir nuestro firmware, tenemos que tener claro cómo funcionan nuestros módulos y qué podemos leer y escribir de ellos. Sabiendo esto, Litex y Migen se han encargado de abstraer estos procesos mediante funciones generadas que se encuentran en el archivo [CSR.h](https://github.com/unal-edigital2-labs/wp08-2021-2-gr-06/blob/main/build/nexys4ddr/software/include/generated/csr.h) que podremos utilizar al escribir el programa que ejecutará nuestro SoC.
 
-Como periféricos se implementaron un Sensor de ultrasonido HC-sr04 el cual es usado para la deteccion de vehiculos en un rango de 2 metros por medio de ondas de sonido, tambien se usa un Módulo Bluetooth HC06 el cual permite la comunicacion entre los datos recibidos del sensor y el servo motor, para ser enviados hasta un dispositivo que reciba los datos y los grafique en una interfaz grafica, para lograr un movimiento del sensor se usa adicionalmente un Servomotor MG90, el cual esta caracterizado por 6 estados para realiar un barrido de 180° recubriendo el punto ciego trasero de los camiones.
+En nuestro caso, se escribieron funciones de prueba para cada módulo implementado con el objetivo de comprobar su respectiva operabilidad y, por supuesto, el programa principal con el cual el carro se encontrará en capacidad de recorrer un laberinto, reconocer su entorno y transmitir la información encontrada a un usuario por medio de la terminal y el modulo Bluethooth.
 
-Se presenta un diagrama con las conexiones entre los diferentes periféricos y el SoC:
-![Screenshot](/Imagenes_y_Videos/SoC.png)
+A continuación presentaremos las funciones integradas junto con sus respectivas explicaciones.
 
-El mapa de memoria se presenta a continuación.
-| csr_base| Direccion |
-| ------------- | ------------- |
-|leds|0x82000000|
-|switchs|0x82000800|
-|buttons|0x82001000|
-|display|0x82001800|
-|ledRGB_1|0x82002000|
-|ledRGB_2|0x82002800|
-|vga_cntrl|0x82003000|
-|uart1|0x82004000|
-|uart2|0x82005000|
-|uart3|0x82006000|
-|infra_cntrl|0x82006800|
-|pwm_cntrl|0x82007000|
-|ultrasonido|0x82007800|
-|ctrl|0x82008000|
-|timer0|0x82008800|
-|uart|0x82009000|
+### test_ir()
 
-## [Firmware](/firmware/) :
-Se presenta la información del código usado para el desarrollo del funcionamiento del robot cartógrafo y principalmente el archivo [main.c](/firmware/main.c). 
+```C
+static void test_ir(void){
+	while(!(buttons_in_read()&1)) {
+		leds_out_write(infrarrojo_cntrl_distancia_read());
+		delay_ms(50);
+		}
+}
+```
+En esta función vamos a presentar mediante los LED's integrados de la FPGA la lectura obtenida por el sensor infrarrojo en intervalos de 50ms hasta que presionemos un pulsador de su tablero.
 
-## [Periféricos](/module) :
-En cada uno de los links se presenta el módulo en verilog y una explicación detallada del código utilizado para su funcionamiento.
+### test_us()
+```C
+static void test_us(void){
+	while(!(buttons_in_read()&1)) {
+		ultrasonido_orden_write(1);
+		bool done = false;
+		while(!done){
+			done = ultrasonido_done_read();
+		}
+		leds_out_write(ultrasonido_d_read());
+		ultrasonido_orden_write(0);
+		delay_ms(50);
+		}
+}
+```
+En esta función, haremos algo similar a lo hecho con nuestra prueba del funcionamiento del sensor infrarrojo, ahora con el sensor de ultrasonido. Este difiere en que el módulo de ultrasonido no tiene lecturas repetidas sino que se le debe dar la orden realizar todo el proceso relacionado con hacer la respectiva medición y de la misma manera establecer un reset para que este esté disponible para hacerla nuevamente.
+### pwm_test()
+```C
+static void test_pwm(void){
+	pwm_cntrl_orden_write(4);
+	delay_ms(3000);
+	pwm_cntrl_orden_write(5);
+	delay_ms(3000);
+	pwm_cntrl_orden_write(6);
+	delay_ms(3000);
+	pwm_cntrl_orden_write(4);
+	delay_ms(500);
+}
+```
+Con esta función, hacemos uso de la entrada "orden" previamente definida para el módulo PWM que nos permite girar un servomotor a -90°, 0° y 90°. 
+### uart3_test()
+```C
+static void uart3_test(void){
+	uart3_rxtx_write('A');
+	printf("A");
+	delay_ms(500);
+}
+```
+En esta función, probaremos la UART que implementamos en pines arbitrarios de la FPGA, para ello, ponemos los respectivos pines de Rx y Tx en corto, pues probaremos de esta manera en la consola que tanto la escritura como la lectura de estos es correcta.
+### rotate_car()
+```C
+void rotate_car(bool right){
+	if (right){
+		// Rotación a la derecha
+		uart1_rxtx_write('J');
+		delay_ms(350);
+		uart1_rxtx_write('I');
+		delay_ms(500);
+	} else {
+		// Rotación a la izquierda
+		uart1_rxtx_write('H');
+		delay_ms(350);
+		uart1_rxtx_write('I');
+		delay_ms(500);
+	}
+}
+```
+Esta función nos permite rotar el carro a la izquierda o a la derecha, para ello, hacemos uso de la UART1 que escribirá al Arduino la instrucción relacionada al giro de los motores con este fin. Al escribir la instrucción, le daremos un espacio de 350ms que es el tiempo que en nuestro caso resultó efctivo para realizar un giro adecuado y posteriormente detenemos todo el movimiento por 500ms para lograr una mayor estabilidad.
+### forward()
+```C
+void forward(void){
+	printf("Avanzando\n");
+	uart1_rxtx_write('G');	
+	while(infra_cntrl_output_infra_read() != 31){
+		printf("Saliendo de la linea negra\n");
+	}
+		
+	while(1) {
+		printf("buscando linea negra\n");
+		if (infra_cntrl_output_infra_read() < 31)
+			break;
+		
+	}
+	uart1_rxtx_write('I');
+	
+}
+```
+Con esta función, buscamos que el carro avance hasta encontrar una línea negra en el suelo dadas las condiciones que se nos fueron dadas para el laberinto. Para ello escribimos la señal de avanzar por medio de la UART1 al Arduino y de allí en adelante revisamos constantemente la salida provista por el sensor infrarrojo que, cuando detecte una distancia mayor a 2 (parámetro que nos entregó buenos resultados para detectar líneas negras), envíe la señal de alto para detener el movimiento.
 
-- [Ultrasonido](/module/verilog/Ultrasonido/)
-- [Infrarrojos](/module/verilog/Infrarrojo/)
-- [Servomotor (pwm)](/module/verilog/PWM)
-- [Motores](/Arduino/Motores)
-- [Bluetooth](/Arduino/Bluetooth)
-- [Sensor de Temperatura](/Arduino/SensorTemperatura)
+```C
+static void temhum_test(void){
+	unsigned int temp[2];
+	temp[0] = uart2_rxtx_read();
+	printf("Temperatura: %d\n", temp[0]);
+	temp[1] = uart2_rxtx_read();
+	printf("Húmedad: %ld \n", temp[1]);
+}
+```
+En esta fuinción se obtiene de manera individual el valor de la temperatura y la humedad obtenida por el UART del Arduino.
 
-## Alimentación:
-Se alimentan los periféricos a través de una extensión y un cargador de 5V/2A. El puente H se alimenta con 8 pilas AA para alcanzar los 12 voltios requeridos y la corriente que necesitan los motores para mover el carro. Debido a algunos inconvenientes con la alimentación de la FPGA y el Arduino, estos se conectan a los puertos USB del computador y se debe mover el computador según la ruta que siga el robot.
+Todos los resultados se pueden ver en vídeo [aquí](https://drive.google.com/drive/folders/112-6SYxrrSyqni91OqtPZYYySc63U7gP?usp=sharing).
 
-## Diseño:
-Se realizó un diseño para impresión en 3D de la base del carro cartógrafo y se presentan todos los documentos de diseño en el siguiente enlace [Diseño](/Diseño).
+## Programa principal  Recorrido del laberinto 
+Antes de proceder con la explicación de nuestro algoritmo para recorrer el laberinto, recordaremos algunas condiciones y aspectos generales planteados.
 
-## Pruebas de Funcionamiento :
-Se encuentra a continuación un enlace con los vídeos de funcionamiento de cada uno de los periféricos y el resultado final. [aqui](https://drive.google.com/drive/folders/112-6SYxrrSyqni91OqtPZYYySc63U7gP?usp=sharing)
+ - El laberinto consiste cualquier recorrido donde solo sea posible una accion entre avanzar, girar a la izquierda o a la derecha.
+ - El carro siempre tendrá una vía libre a la cual avanzar, de lo contrario, se asumirá que es el final del recorrido.
+ - La información se presentará en un vector en la que la información en direcciones absolutas se presenta de la manera [UP, LEFT, DOWN].
+ 
+Cabe recordar que este se encuentra adecuadamente comentado y en su totalidad en el archivo [main.c](https://github.com/unal-edigital2-labs/wp08-2021-2-gr-06/blob/main/firmware/main.c) de la carpeta firmware.
 
-- Detección infrarrojo
-- Ultrasonido/Giro Izquierda
-- Ultrasonido/Giro Derecha
-- Servomotor
-- Bluetoot
-- Sensor de Temperatura y Humedad
-- Resultado Final
 
-## Consideraciones Finales :
-
-- Teniendo en cuenta dificultades presentadas dentro de la realización del presente proyecto, se recomienda tener especial cuidado con la conexión de todas las tierras del circuito a un punto fijo, ya que el correcto funcionamiento de algunos módulos (por no decir de todos) depende de esto. Si se llega a tener un movimiento extraño en el [servomotor](/module/verilog/PWM) o si se está recibiendo extraños caracteres por el celular debido al módulo [Bluetooth](/Arduino/Bluetooth), son algunos de los problemas presentados, si no se tiene en cuenta lo anterior.
-- Se recomienda realizar un correcto uso del [sensor infrarrojo](/module/verilog/Infrarrojo/) para poder tener un mayor control en el Robot Cartográfico, ya que como se puede ver en el video, al tener líneas paralelas para el frenado, un posible error en la mecánica de los [motorreductores](/Arduino/Motores) ocasionó que fuera necesario tener que reposicionar el robot en el camino.
-- El módulo de cámara se encuentra en el repositorio, aunque este no fue posible implementarse finalmente los avances presentados quedan disponibles en la misma carpeta de módulos como ayuda para una posible implementación.
+# ¿Cómo compilar y subir el firmware?
+Una vez tenemos el firmware completamente escrito, tendremos que compilarlo en un archivo binario legible para el SoC. Este paso resulta sencillo debido a que es exactamente como compilar en el lenguaje C, además de que contamos con un archivo makefile por lo que el proceso que seguiremos inicia con asegurarnos de:
+- Tener añadido el Path de Litex en la terminal
+- Haber guardado todos los cambios en nuestros archivos de C.
+Una vez hecho esto, abrimos una terminal en este directorio y ejecutamos el comando:
+```ssh
+make all
+```
+Comando que debe resultar sin errores y, una vez hecho esto, ya tenemos a nuestra disposición un archivo `firmware.bin` que podremos subir al SoC mediante la terminal de litex, abriendo una terminal en el directorio raíz del proyecto y ejecutando los comandos:
+```ssh
+sudo chmod 777 /dev/ttyUSB1
+litex_term /dev/ttyUSB1 --kernel firmware/firmware.bin
+```
