@@ -18,7 +18,7 @@
 -- Descripción: Código que realiza divisiones mediante sumatorias, el algoritmo cuenta el número de iteraciones que fueron necesarias para que el divisor
 --              sea igual o mayor al dividendo.
 --
--- Características: 
+-- Características:
 --
 --                - El codigo optimiza recursos pero aumenta el tiempo de cálculo.
 --                - El tiempo que le tome al codigo calcular el resultado dependerá de la frecuencia de reloj y del número de iteraciones que se requerirán.
@@ -60,7 +60,7 @@ if rising_edge(CLK) then
 			iteraciones <= (others => '0');
 			edo <= 1;
 		end if;
-		
+
 	elsif edo = 1 then -- Proceso de aproximación para calcular el número de iteraciones.
 		if divisor_s <= dividendo_s then -- Si es menor o igual el proceso continúa.
 			divisor_s <= divisor_s + DIVISOR;
@@ -71,14 +71,14 @@ if rising_edge(CLK) then
 			ok <= '1';
 			edo <= 2;
 		end if;
-		
+
 	elsif edo = 2 then -- Se desactiva la bandera "ok".
 		ok <= '0';
 		edo <= 3;
-	
+
 	elsif edo = 3 then -- Estado dummy.
 		edo <= 0;
-	
+
 	end if;
 end if;
 end process;

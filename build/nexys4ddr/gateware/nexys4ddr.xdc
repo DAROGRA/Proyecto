@@ -245,6 +245,26 @@ set_property IOSTANDARD LVCMOS33 [get_ports {ledRGB2_g}]
 set_property LOC G14 [get_ports {ledRGB2_b}]
 set_property IOSTANDARD LVCMOS33 [get_ports {ledRGB2_b}]
 
+# pwm:0
+set_property LOC E7 [get_ports {pwm}]
+set_property IOSTANDARD LVCMOS33 [get_ports {pwm}]
+
+# ECO:0
+set_property LOC J3 [get_ports {ECO}]
+set_property IOSTANDARD LVCMOS33 [get_ports {ECO}]
+
+# TRIGGER:0
+set_property LOC J4 [get_ports {TRIGGER}]
+set_property IOSTANDARD LVCMOS33 [get_ports {TRIGGER}]
+
+# uart1:0.tx
+set_property LOC H4 [get_ports {uart1_tx}]
+set_property IOSTANDARD LVCMOS33 [get_ports {uart1_tx}]
+
+# uart1:0.rx
+set_property LOC H1 [get_ports {uart1_rx}]
+set_property IOSTANDARD LVCMOS33 [get_ports {uart1_rx}]
+
 ################################################################################
 # Design constraints
 ################################################################################

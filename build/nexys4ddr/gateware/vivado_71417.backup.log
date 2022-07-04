@@ -1,0 +1,92 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Thu Jun 30 12:41:53 2022
+# Process ID: 71417
+# Current directory: /home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware
+# Command line: vivado -mode batch -source nexys4ddr.tcl
+# Log file: /home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/vivado.log
+# Journal file: /home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/vivado.jou
+#-----------------------------------------------------------
+source nexys4ddr.tcl
+# create_project -force -name nexys4ddr -part xc7a100t-CSG324-1
+# set_msg_config -id {Common 17-55} -new_severity {Warning}
+# read_verilog {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/Servo/ServoRadar.v}
+# read_vhdl -vhdl2008 {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd}
+# set_property library work [get_files {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd}]
+# read_vhdl -vhdl2008 {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd}
+# set_property library work [get_files {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd}]
+# read_vhdl -vhdl2008 {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd}
+# set_property library work [get_files {/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd}]
+# read_verilog {/opt/Litex/pythondata-cpu-picorv32/pythondata_cpu_picorv32/verilog/picorv32.v}
+# read_verilog {/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v}
+# read_xdc nexys4ddr.xdc
+# set_property PROCESSING_ORDER EARLY [get_files nexys4ddr.xdc]
+# synth_design -directive default -top nexys4ddr -part xc7a100t-CSG324-1
+Command: synth_design -directive default -top nexys4ddr -part xc7a100t-CSG324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 71433 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1751.133 ; gain = 152.688 ; free physical = 7654 ; free virtual = 14208
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'nexys4ddr' [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:20]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:974]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:974]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:975]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:975]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:976]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:976]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:977]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:977]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:979]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:979]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:980]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:980]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:982]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:982]
+INFO: [Synth 8-5534] Detected attribute (* dont_touch = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:983]
+INFO: [Synth 8-5534] Detected attribute (* async_reg = "true" *) [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:983]
+INFO: [Synth 8-3876] $readmem data file 'nexys4ddr_rom.init' is read successfully [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:3226]
+INFO: [Synth 8-3876] $readmem data file 'nexys4ddr_sram.init' is read successfully [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:3241]
+INFO: [Synth 8-3876] $readmem data file 'nexys4ddr_main_ram.init' is read successfully [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:3264]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2655]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2664]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2687]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2748]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2816]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2884]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2896]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2908]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2917]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:2972]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:3014]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:3056]
+INFO: [Synth 8-6157] synthesizing module 'ServoRadar' [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/Servo/ServoRadar.v:5]
+INFO: [Synth 8-226] default block is never used [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/Servo/ServoRadar.v:18]
+INFO: [Synth 8-6155] done synthesizing module 'ServoRadar' (1#1) [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/Servo/ServoRadar.v:5]
+INFO: [Synth 8-638] synthesizing module 'sensor_prueba' [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd:16]
+	Parameter FPGA_CLK bound to: 100000000 - type: integer 
+INFO: [Synth 8-3491] module 'INTESC_LIB_ULTRASONICO_RevC' declared at '/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd:54' bound to instance 'u1' of component 'INTESC_LIB_ULTRASONICO_RevC' [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd:34]
+INFO: [Synth 8-638] synthesizing module 'INTESC_LIB_ULTRASONICO_RevC' [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd:70]
+	Parameter FPGA_CLK bound to: 100000000 - type: integer 
+INFO: [Synth 8-3491] module 'DIVISION_ULTRASONICO_RevA' declared at '/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd:31' bound to instance 'Inst_DIVISION_ULTRASONICO_RevA' of component 'DIVISION_ULTRASONICO_RevA' [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd:105]
+INFO: [Synth 8-638] synthesizing module 'DIVISION_ULTRASONICO_RevA' [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd:44]
+INFO: [Synth 8-256] done synthesizing module 'DIVISION_ULTRASONICO_RevA' (2#1) [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd:44]
+INFO: [Synth 8-256] done synthesizing module 'INTESC_LIB_ULTRASONICO_RevC' (3#1) [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd:70]
+ERROR: [Synth 8-690] width mismatch in assignment; target has 8 bits, source has 9 bits [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd:52]
+ERROR: [Synth 8-285] failed synthesizing module 'sensor_prueba' [/home/alejandro/Digital_2/SoC_project_2022/module/verilog/ultrasonidoprueba/sensor_prueba.vhd:16]
+ERROR: [Synth 8-6156] failed synthesizing module 'nexys4ddr' [/home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/nexys4ddr.v:20]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 1809.852 ; gain = 211.406 ; free physical = 7678 ; free virtual = 14232
+---------------------------------------------------------------------------------
+RTL Elaboration failed
+INFO: [Common 17-83] Releasing license: Synthesis
+45 Infos, 0 Warnings, 0 Critical Warnings and 4 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
+INFO: [Common 17-206] Exiting Vivado at Thu Jun 30 12:42:12 2022...

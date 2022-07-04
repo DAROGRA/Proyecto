@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date         : Sat Jun 25 10:39:01 2022
+| Date         : Thu Jun 30 12:46:05 2022
 | Host         : alejandro-Legion-Y540-15IRH-PG0 running 64-bit Ubuntu 20.04.4 LTS
 | Command      : report_utilization -hierarchical -file nexys4ddr_utilization_hierarchical_place.rpt
 | Design       : nexys4ddr
@@ -18,16 +18,22 @@ Table of Contents
 1. Utilization by Hierarchy
 ---------------------------
 
-+----------------+-------------------+------------+------------+---------+------+------+--------+--------+--------------+
-|    Instance    |       Module      | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs | RAMB36 | RAMB18 | DSP48 Blocks |
-+----------------+-------------------+------------+------------+---------+------+------+--------+--------+--------------+
-| nexys4ddr      |             (top) |       2940 |       2836 |     104 |    0 | 2431 |     14 |      0 |            0 |
-|   (nexys4ddr)  |             (top) |        623 |        607 |      16 |    0 | 1304 |     14 |      0 |            0 |
-|   picorv32     |          picorv32 |       2317 |       2229 |      88 |    0 | 1127 |      0 |      0 |            0 |
-|     (picorv32) |          picorv32 |       1598 |       1510 |      88 |    0 |  672 |      0 |      0 |            0 |
-|     pcpi_div   | picorv32_pcpi_div |        387 |        387 |       0 |    0 |  200 |      0 |      0 |            0 |
-|     pcpi_mul   | picorv32_pcpi_mul |        332 |        332 |       0 |    0 |  255 |      0 |      0 |            0 |
-+----------------+-------------------+------------+------------+---------+------+------+--------+--------+--------------+
++--------------------------------------+-----------------------------+------------+------------+---------+------+------+--------+--------+--------------+
+|               Instance               |            Module           | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs | RAMB36 | RAMB18 | DSP48 Blocks |
++--------------------------------------+-----------------------------+------------+------------+---------+------+------+--------+--------+--------------+
+| nexys4ddr                            |                       (top) |       3208 |       3088 |     120 |    0 | 2904 |     14 |      0 |            0 |
+|   (nexys4ddr)                        |                       (top) |        710 |        678 |      32 |    0 | 1473 |     14 |      0 |            0 |
+|   ServoRadar                         |                  ServoRadar |         46 |         46 |       0 |    0 |   22 |      0 |      0 |            0 |
+|   picorv32                           |                    picorv32 |       2351 |       2263 |      88 |    0 | 1127 |      0 |      0 |            0 |
+|     (picorv32)                       |                    picorv32 |       1632 |       1544 |      88 |    0 |  672 |      0 |      0 |            0 |
+|     pcpi_div                         |           picorv32_pcpi_div |        388 |        388 |       0 |    0 |  200 |      0 |      0 |            0 |
+|     pcpi_mul                         |           picorv32_pcpi_mul |        332 |        332 |       0 |    0 |  255 |      0 |      0 |            0 |
+|   sensor_prueba                      |               sensor_prueba |        101 |        101 |       0 |    0 |  282 |      0 |      0 |            0 |
+|     (sensor_prueba)                  |               sensor_prueba |          0 |          0 |       0 |    0 |    8 |      0 |      0 |            0 |
+|     u1                               | INTESC_LIB_ULTRASONICO_RevC |        101 |        101 |       0 |    0 |  274 |      0 |      0 |            0 |
+|       (u1)                           | INTESC_LIB_ULTRASONICO_RevC |         27 |         27 |       0 |    0 |  144 |      0 |      0 |            0 |
+|       Inst_DIVISION_ULTRASONICO_RevA |   DIVISION_ULTRASONICO_RevA |         74 |         74 |       0 |    0 |  130 |      0 |      0 |            0 |
++--------------------------------------+-----------------------------+------------+------------+---------+------+------+--------+--------+--------------+
 * Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
 
 

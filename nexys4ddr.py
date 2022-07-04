@@ -93,6 +93,16 @@ _io = [
 
     ("clk", 0, Pins("E3"), IOStandard("LVCMOS33")),
 
+#    ("uart1", 0,
+#        Subsignal("tx", Pins("D4")),
+#        Subsignal("rx", Pins("C4")),
+#        IOStandard("LVCMOS33"),
+#    ),
+
+
+
+
+
     ("serial", 0,
         Subsignal("tx", Pins("D4")),
         Subsignal("rx", Pins("C4")),
@@ -141,21 +151,42 @@ _io = [
         Subsignal("int_n", Pins("D8")),
         IOStandard("LVCMOS33")
      ),
+
+        ("pwm", 0, Pins("E7"), IOStandard("LVCMOS33")),
+
+
+
+
+        ## Ultrasonido
+        ("ECO", 0, Pins("J3"), IOStandard("LVCMOS33")),
+        ("TRIGGER", 0, Pins("J4"), IOStandard("LVCMOS33")),
+
+    ("uart1", 0,
+        Subsignal("tx", Pins("H4")),
+        Subsignal("rx", Pins("H1")),
+        IOStandard("LVCMOS33"),
+    ),
+        #Bluetooth
+        #("uart1", 0,
+        #    Subsignal("tx", Pins("C4")),
+        #    Subsignal("rx", Pins("D4")),
+        #    IOStandard("LVCMOS33"),
+        # ),
 ]
 
     # Motor servo uwu
-    ("pwm", 0, Pins("E7"), IOStandard("LVCMOS33")),
 
-    # Ultrasonido
-    ("echo", 0, Pins("J3"), IOStandard("LVCMOS33")),
-    ("trig", 0, Pins("J4"), IOStandard("LVCMOS33")),
+
+    ## Ultrasonido
+#    ("echo", 0, Pins("J3"), IOStandard("LVCMOS33")),
+    #("trig", 0, Pins("J4"), IOStandard("LVCMOS33")),
 
     #Bluetooth
-    ("uart1", 0,
-        Subsignal("tx", Pins("C4")),
-        Subsignal("rx", Pins("D4")),
-        IOStandard("LVCMOS33"),
-     ),
+    #("uart1", 0,
+    #    Subsignal("tx", Pins("C4")),
+    #    Subsignal("rx", Pins("D4")),
+    #    IOStandard("LVCMOS33"),
+    # ),
 
 # Platform -----------------------------------------------------------------------------------------
 

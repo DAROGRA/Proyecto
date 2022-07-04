@@ -24,7 +24,7 @@
 --                sumatorias y comparaciones, dependiendo el tama�o del numerador y la frecuencia de reloj es el tiempo que le toma al componente realizar la divisi�n.
 --              - La librer�a genera el pulso Trigger con los siguientes tiempos:
 --
---                  |--10us--| 
+--                  |--10us--|
 --
 --    TRIGGER	____/����������\_________ ... ____________/����������\__________ ... ____________/����������\_____
 --                  1er pulso                             2do pulso                               pulso N
@@ -36,7 +36,7 @@
 --
 --
 -- NOTA: Estos son los tiempos sugeridos en la hoja de especificaciones del sensor, en caso
---       de querer cambiar estos tiempos se debe modificar los valores de "ESCALA_PERIODO_TRIGGER" 
+--       de querer cambiar estos tiempos se debe modificar los valores de "ESCALA_PERIODO_TRIGGER"
 --			y "ESCALA_TRIGGER".
 --
 -- Una vez que se manda la se�al de trigger, el sensor responde con un pulso (ECO) el cual se mide y se obtiene
@@ -62,7 +62,7 @@ PORT(
 		ECO 			 : IN  STD_LOGIC;                   -- Eco del sensor ultras�nico.
 		TRIGGER 		 : OUT STD_LOGIC;                   -- Trigger del sensor ultras�nico.
 		DATO_LISTO 	 : OUT STD_LOGIC;                   -- Bandera que indica cuando el valor de la distancia es correcto.
-		DISTANCIA_CM : OUT STD_LOGIC_VECTOR(8 DOWNTO 0) -- Valor de la distancia en cent�metros-
+		DISTANCIA_CM : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) -- Valor de la distancia en cent�metros-
 );
 
 end INTESC_LIB_ULTRASONICO_RevC;
@@ -79,7 +79,7 @@ PORT(
 	CLK       : IN  std_logic;
 	INI       : IN  std_logic;
 	DIVIDENDO : IN  std_logic_vector(31 downto 0);
-	DIVISOR   : IN  std_logic_vector(31 downto 0);          
+	DIVISOR   : IN  std_logic_vector(31 downto 0);
 	RESULTADO : OUT std_logic_vector(31 downto 0);
 	OK        : OUT std_logic
 	);
@@ -102,13 +102,13 @@ signal edo_eco : integer range 0 to 7 := 0;                                   --
 begin
 
 -- Instancia del componente que realiza la divisi�n.
-		Inst_DIVISION_ULTRASONICO_RevA: DIVISION_ULTRASONICO_RevA 
+		Inst_DIVISION_ULTRASONICO_RevA: DIVISION_ULTRASONICO_RevA
 	PORT MAP(
-			CLK, 
-			INI, 
-			DIVIDENDO, 
-			DIVISOR, 
-			RESULTADO, 
+			CLK,
+			INI,
+			DIVIDENDO,
+			DIVISOR,
+			RESULTADO,
 			OK );
 
 --PROCESO QUE GENERA SE�AL DE TRIGGER---
@@ -137,24 +137,24 @@ if rising_edge(CLK) then
 		if eco = '1' then
 			edo_eco <= 1;
 		end if;
-		
+
 	elsif edo_eco = 1 then
 		if eco = '1' then -- Cuenta el n�mero de periodos cuando Eco se encuentra en '1'.
 			conta_eco <= conta_eco+1;
 		else
 			edo_eco <= 2;
 		end if;
-		
+
 	elsif edo_eco = 2 then -- Se reinicia el contador cuando Eco se hace '0' y se almacena el �ltimo valor registrado en "conta_eco". Se pone a '1' "calcular".
 		conta_eco <= 0;
 		escala_total <= conta_eco;
 		calcular <= '1';
 		edo_eco <= 3;
-			
+
 	elsif edo_eco = 3 then -- Se desactuva el bit "calcular" y se regresa al estado 0.
 		calcular <= '0';
 		edo_eco <= 0;
-		
+
 	end if;
 end if;
 end process;
@@ -168,14 +168,14 @@ if rising_edge(CLK) then -- Espera a que transcurra el primer trigger para reali
 		if trigger_s = '1' then
 			edo_res <= 1;
 		end if;
-		
+
 	elsif edo_res = 1 then -- Espera a que se le indique cu�ndo realizar la divisi�n para obtener los microsegundos que dur� "Eco".
 		if calcular = '1' then
 			dividendo <= conv_std_logic_vector(escala_total,32);
 			divisor <= conv_std_logic_vector(VAL_1US,32);
 			edo_Res <= 3;
 		end if;
-		
+
 	elsif edo_res = 3 then -- Espera a que finalice el proceso de divisi�n.
 		if ok = '1' then
 			edo_res <= 4;
@@ -183,12 +183,12 @@ if rising_edge(CLK) then -- Espera a que transcurra el primer trigger para reali
 		else
 			ini <= '1';
 		end if;
-		
+
 	elsif edo_res = 4 then -- Se realiza la divisi�n Tmicrosegundos/58 para obtener el valor de la distancia.
 		dividendo <= resultado;
 		divisor <= conv_std_logic_vector(58,32);
 		edo_res <= 5;
-		
+
 	elsif edo_res = 5 then -- Espera a que finalice el proceso de divisi�n.
 		if ok = '1' then
 			edo_res <= 6;
@@ -196,19 +196,19 @@ if rising_edge(CLK) then -- Espera a que transcurra el primer trigger para reali
 		else
 			ini <= '1';
 		end if;
-	
+
 	elsif edo_res = 6 then -- Espera a que Trigger se ponga a '1' y se mande la distancia por el puerto "DISTANCIA_CM". Se activa la bandera "DATO_LISTO".
 		if trigger_s = '1' then
 			DATO_LISTO <= '1';
-			DISTANCIA_CM <= resultado(8 downto 0);
+			DISTANCIA_CM <= resultado(7 downto 0);
 			edo_res <= 7;
 		end if;
-		
-	
+
+
 	elsif edo_res = 7 then -- Se desactiva la bandera "DATO_LISTO".
 		DATO_LISTO <= '0';
 		edo_res <= 1;
-	
+
 	end if;
 end if;
 end process;

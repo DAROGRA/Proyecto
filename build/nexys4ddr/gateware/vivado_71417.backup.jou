@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Thu Jun 30 12:41:53 2022
+# Process ID: 71417
+# Current directory: /home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware
+# Command line: vivado -mode batch -source nexys4ddr.tcl
+# Log file: /home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/vivado.log
+# Journal file: /home/alejandro/Digital_2/SoC_project_2022/build/nexys4ddr/gateware/vivado.jou
+#-----------------------------------------------------------
+source nexys4ddr.tcl
