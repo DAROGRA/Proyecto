@@ -43,6 +43,8 @@ En cada uno de los links se presenta el módulo en verilog y una explicación de
 - [Servomotor (pwm)](module/verilog/Servo/ServoRadar.v)
 - [Bluetooth](/firmware/uart1.c)
 
+En el caso del Ultrasonido se tienen cargados los archivos de drivers usados para el funcionamiento del  periferico, [Libreria US](/module/verilog/ultrasonidoprueba/DIVISION_ULTRASONICO_RevA.vhd), [Libreria US](/module/verilog/ultrasonidoprueba/INTESC_LIB_ULTRASONICO_RevC.vhd)
+
 ## Alimentación:
 Para la alminetacion de los perifericos se hizo uso de un arduino UNO, se obtiene una alimentacion de 5V, y se deja igualemnte una tierra en una baquela universal, y se procede a alimentar todos los perifericos por medio de esta baquela. 
 
