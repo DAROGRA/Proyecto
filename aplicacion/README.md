@@ -1,70 +1,56 @@
-# BUHO, Radar Puntos Ciego
+# Diseño de la aplicacion
 
-# Autores 💡
+# PARTES
 
-* Daniel Andres Rojas Granados ⚡
-* Diana Sofia Lopez ⚡
-* Juan David Lopez ⚡
+![Screenshot](/aplicacion/Recepcion.jpeg)
+
+Este bloque se encarga de recibir la información transmitida por el módulo Bluetooth, la cual se configuró para enviar una concatenación de cuatro números, donde los 3 más significativos son la distancia medida por el sensor de ultrasonido en cm, y el menos significativo es un número entre 1 y 7, el cual representa la dirección en la que se esta apuntando el ultrasonido. Estas direcciones son un ángulo entre 0° y 180°  dado por la posición del servomotor: 
 
 
-Este es el repositorio del Robot Cartógrafo para la Asignatura de Electrónica Digital II de la Universidad Nacional de Colombia -  Sede Bogotá. El robot cartógrafo se realizó bajo una arquitectura de SoC, en una tarjeta de desarrollo Nexys A7, y periféricos los cuales sirven para cumplir el objetivo del proyecto, su funcionamiento principal radica en la generación de un vector donde se encuentran las direcciones del robot en cada instante de tiempo según el análisis del entorno en el que se encuentra por medio del sensor de ultrasonido, sensores infrarrojos y envio de datos por medio de bluetooth, y por otra parte se tiene un registro de la temperatura y humedad de las condiciones ambientales a las cuales esta sometido, siendo este nuestro periférico adicional.
+| Posición |   Ángulo(°) |
+| --- | --- |
+| 1 | 0 |
+| 2 | 30 |
+| 3 | 60 |
+| 4 | 90 |
+| 5 | 120 |
+| 6 | 150 |
+| 7 | 180 |
 
-![Screenshot](/Graficos/ciegos.jpg)
 
-Como periféricos se implementaron un Sensor de ultrasonido HC-sr04 el cual es usado para la deteccion de vehiculos en un rango de 2 metros por medio de ondas de sonido, tambien se usa un Módulo Bluetooth HC06 el cual permite la comunicacion entre los datos recibidos del sensor y el servo motor, para ser enviados hasta un dispositivo que reciba los datos y los grafique en una interfaz grafica, para lograr un movimiento del sensor se usa adicionalmente un Servomotor MG90, el cual esta caracterizado por 6 estados para realiar un barrido de 180° recubriendo el punto ciego trasero de los camiones.
+Ejemplo: El servomotor se encuentra apuntando en dirección de 90° y mide una distancia de 90 cm. La señal recibida es 0904. Al tomar el módulo de este valor entre 10 la variable Estado será 4, y al dividir entre 10, la variable Radio será 090 al ser de tipo entero.
 
-Se presenta un diagrama con las conexiones entre los diferentes periféricos y el SoC:
+![Screenshot](/aplicacion/State2Angulo.jpeg)
 
-![Screenshot](/Graficos/SoC.png)
+Estos bloques se encargan de convertir la variable Estado, en el ángulo correspondiente a la tabla mostrada previamente.
 
-El mapa de memoria se presenta a continuación.
-| csr_base| Direccion |
-| ------------- | ------------- |
-|leds|0x82000000|
-|switchs|0x82000800|
-|buttons|0x82001000|
-|display|0x82001800|
-|ledRGB_1|0x82002000|
-|ledRGB_2|0x82002800|
-|servomotor_ctr|0x82003000|
-|ultrasound_ctr|0x82003800|
-|uart_txrx|0x82004800|
-|ctrl|0x82005004|
-|timer0|0x82005800|
-|uart|0x82006000|
 
-## [Firmware](/firmware/) :
-Se presenta la información del código usado para el desarrollo del funcionamiento del radar y principalmente el archivo [main.c](/firmware/main.c). 
+![Screenshot](/aplicacion/Polare2Cartesianas.jpeg)
 
-## [Periféricos](/module) :
-En cada uno de los links se presenta el módulo en verilog y una explicación detallada del código utilizado para su funcionamiento.
+Este código se encarga de convertir de coordenadas polares a coordenadas cartesianas los valores recibidos anteriormente, y adicionalmente los ajusta a las proporciones de la pantalla del dispositivo utilizado.
 
-- [Ultrasonido](/module/verilog/Ultrasonido/)
-- [Infrarrojos](/module/verilog/Infrarrojo/)
-- [Servomotor (pwm)](/module/verilog/PWM)
-- [Motores](/Arduino/Motores)
-- [Bluetooth](/Arduino/Bluetooth)
-- [Sensor de Temperatura](/Arduino/SensorTemperatura)
+![Screenshot](/aplicacion/Origen.jpeg)
 
-## Alimentación:
-Para la alminetacion de los perifericos se hizo uso de un arduino UNO, se obtiene una alimentacion de 5V, y se deja igualemnte una tierra en una baquela universal, y se procede a alimentar todos los perifericos por medio de esta baquela. 
+este bloque se encarga de centrar el origen en un punto determinado de la pantalla, y posteriormente graficar el punto en la posición deseada.
 
-## Diseño:
-Para el diseño de los cases se realizo un modelado con un periferico por medio del programa de Autodesk Thinkercad, y se montaron los diseños en la siguiente carpeta [Diseño](/Modelos_3D).
+![Screenshot](/aplicacion/Distancia.jpeg)
 
-## Pruebas de Funcionamiento :
-Se encuentra a continuación un enlace con los vídeos de funcionamiento de cada uno de los periféricos y el resultado final. [aqui](https://drive.google.com/drive/folders/112-6SYxrrSyqni91OqtPZYYySc63U7gP?usp=sharing)
+Este bloque se encarga de mostrar el valor de la distancia a la que se encuentra el objeto en metros, y en caso de que esta sea mayor a 2 m , muestra un mensaje de que no hay objetos visibles.
 
-- Detección infrarrojo
-- Ultrasonido/Giro Izquierda
-- Ultrasonido/Giro Derecha
-- Servomotor
-- Bluetoot
-- Sensor de Temperatura y Humedad
-- Resultado Final
+![Screenshot](/aplicacion/Direccionales.jpeg)
 
-## Consideraciones Finales :
+Este código se encarga de enviar un número de 1 o 7 en caso de oprimir las flechas de derecha o izquierda, con el fin de ubicar el servomotor en dicha dirección, de manera que cuando el vehículo se disponga a girar, se cubra correctamente.
 
-- Teniendo en cuenta dificultades presentadas dentro de la realización del presente proyecto, se recomienda tener especial cuidado con la conexión de todas las tierras del circuito a un punto fijo, ya que el correcto funcionamiento de algunos módulos (por no decir de todos) depende de esto. Si se llega a tener un movimiento extraño en el [servomotor](/module/verilog/PWM) o si se está recibiendo extraños caracteres por el celular debido al módulo [Bluetooth](/Arduino/Bluetooth), son algunos de los problemas presentados, si no se tiene en cuenta lo anterior.
-- Se recomienda realizar un correcto uso del [sensor infrarrojo](/module/verilog/Infrarrojo/) para poder tener un mayor control en el Robot Cartográfico, ya que como se puede ver en el video, al tener líneas paralelas para el frenado, un posible error en la mecánica de los [motorreductores](/Arduino/Motores) ocasionó que fuera necesario tener que reposicionar el robot en el camino.
-- El módulo de cámara se encuentra en el repositorio, aunque este no fue posible implementarse finalmente los avances presentados quedan disponibles en la misma carpeta de módulos como ayuda para una posible implementación.
+# Pruebas en la tablet:
+
+![Screenshot](/aplicacion/Prueba_radar.jpeg)
+
+Prueba del radar
+
+![Screenshot](/aplicacion/Ningun_Objeto.jpeg)
+
+Prueba ningun Objeto
+
+
+![Screenshot](/aplicacion/Deteccion_de_Objeto.jpeg)
+Prueba con un objeto cercano
